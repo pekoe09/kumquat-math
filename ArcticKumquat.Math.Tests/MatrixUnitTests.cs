@@ -7,16 +7,46 @@ namespace ArcticKumquat.Math.Tests
     public class MatrixUnitTests
     {
         [Fact]
+        public void TestMatrixInitialization()
+        {
+            decimal?[,] initVals = new decimal?[,] {
+                { 0.7m, 2.5m, 0.0m },
+                { 1.9m, -8.3m, 6.6m }
+                };
+
+            Matrix actual = new Matrix(initVals);
+
+            Assert.Equal(initVals.GetUpperBound(0), actual.Values.GetUpperBound(0));
+            Assert.Equal(initVals.GetUpperBound(1), actual.Values.GetUpperBound(1));
+            for (int i = 0; i <= initVals.GetUpperBound(0); i++)
+            {
+                for (int j = 0; j <= initVals.GetUpperBound(1); j++)
+                {
+                    Assert.Equal(initVals[i, j], actual.Values[i, j]);
+                }
+            }
+        }
+
+        [Fact]
+        public void TestMatrixInitializationWithNullArgument()
+        {
+            const string EXPECTED_MESSAGE = "initialValues";
+
+            var exc = Assert.Throws<ArgumentNullException>(() => new Matrix(null));
+            Assert.Contains(EXPECTED_MESSAGE, exc.Message);
+        }
+
+        [Fact]
         public void TestScalarMultiply()
         {
             Matrix a = new Matrix(new decimal?[,] {
-                { (decimal?)0.7, (decimal?)2.5, (decimal?)0.0 },
-                { (decimal?)1.9, (decimal?)-8.3, (decimal?)6.6 }
+                { 0.7m, 2.5m, 0.0m },
+                { 1.9m, -8.3m, 6.6m }
                 });
             decimal k = 3.7m;
             Matrix expected = new Matrix(new decimal?[,] {
-                { (decimal?)0.7*k, (decimal?)2.5*k, (decimal?)0.0*k },
-                { (decimal?)1.9*k, (decimal?)-8.3*k, (decimal?)6.6*k }
+                { 0.7m*k, 2.5m*k, 0.0m*k },
+                { 1.9m*k, -8.3m*k, 6.6m*k }
                 });
 
             Matrix actual = Matrix.ScalarMultiply(a, k);
@@ -33,16 +63,16 @@ namespace ArcticKumquat.Math.Tests
         }
 
         [Fact]
-        public void TestScalarMultiplyWithNull()
+        public void TestScalarMultiplyWithNullValue()
         {
             Matrix a = new Matrix(new decimal?[,] {
-                { (decimal?)0.7, (decimal?)2.5, (decimal?)3.1 },
-                { null, (decimal?)8.3, (decimal?)6.6 }
+                { 0.7m, 2.5m, 3.1m },
+                { null, 8.3m, 6.6m }
                 });
             decimal k = 3.7m;
             Matrix expected = new Matrix(new decimal?[,] {
-                { (decimal?)0.7*k, (decimal?)2.5*k, (decimal?)3.1*k },
-                { null, (decimal?)8.3*k, (decimal?)6.6*k }
+                { 0.7m*k, 2.5m*k, 3.1m*k },
+                { null, 8.3m*k, 6.6m*k }
                 });
 
             Matrix actual = Matrix.ScalarMultiply(a, k);
@@ -62,16 +92,16 @@ namespace ArcticKumquat.Math.Tests
         public void TestAdd()
         {
             Matrix a = new Matrix(new decimal?[,] {
-                { (decimal?)0.7, (decimal?)2.5, (decimal?)0.0 },
-                { (decimal?)-1.9, (decimal?)8.3, (decimal?)-6.6 }
+                { 0.7m, 2.5m, 0.0m },
+                { -1.9m, 8.3m, -6.6m }
                 });
             Matrix b = new Matrix(new decimal?[,] {
-                { (decimal?)2.1, (decimal?)0.0, (decimal?)0.0 },
-                { (decimal?)-0.9, (decimal?)-8.3, (decimal?)9.9 }
+                { 2.1m, 0.0m, 0.0m },
+                { -0.9m, -8.3m, 9.9m }
                 });
             Matrix expected = new Matrix(new decimal?[,] {
-                { (decimal?)2.8, (decimal?)2.5, (decimal?)0.0 },
-                { (decimal?)-2.8, (decimal?)0.0, (decimal?)3.3 }
+                { 2.8m, 2.5m, 0.0m },
+                { -2.8m, 0.0m, 3.3m }
                 });
 
             Matrix actual = Matrix.Add(a, b);
@@ -88,19 +118,19 @@ namespace ArcticKumquat.Math.Tests
         }
 
         [Fact]
-        public void TestAddWithNull()
+        public void TestAddWithNullValue()
         {
             Matrix a = new Matrix(new decimal?[,] {
-                { (decimal?)0.7, (decimal?)2.5, (decimal?)0.0 },
-                { (decimal?)-1.9, (decimal?)8.3, (decimal?)-6.6 }
+                { 0.7m, 2.5m, 0.0m },
+                { -1.9m, 8.3m, -6.6m }
                 });
             Matrix b = new Matrix(new decimal?[,] {
-                { (decimal?)2.1, (decimal?)0.0, (decimal?)0.0 },
-                { (decimal?)-0.9, (decimal?)null, (decimal?)9.9 }
+                { 2.1m, 0.0m, 0.0m },
+                { -0.9m, null, 9.9m }
                 });
             Matrix expected = new Matrix(new decimal?[,] {
-                { (decimal?)2.8, (decimal?)2.5, (decimal?)0.0 },
-                { (decimal?)-2.8, (decimal?)8.3, (decimal?)3.3 }
+                { 2.8m, 2.5m, 0.0m },
+                { -2.8m, 8.3m, 3.3m }
                 });
 
             Matrix actual = Matrix.Add(a, b);
@@ -120,17 +150,151 @@ namespace ArcticKumquat.Math.Tests
         public void TestAddWithDifferentDimensions()
         {
             Matrix a = new Matrix(new decimal?[,] {
-                { (decimal?)0.7, (decimal?)2.5, (decimal?)0.0 },
-                { (decimal?)-1.9, (decimal?)8.3, (decimal?)-6.6 }
+                { 0.7m, 2.5m, 0.0m },
+                { -1.9m, 8.3m, -6.6m }
                 });
             Matrix b = new Matrix(new decimal?[,] {
-                { (decimal?)2.1, (decimal?)0.0, (decimal?)0.0 },
-                { (decimal?)-0.9, (decimal?)-8.3, (decimal?)9.9 },
-                { (decimal?)-0.9, (decimal?)-8.3, (decimal?)9.9 }
+                { 2.1m, 0.0m, 0.0m },
+                { -0.9m, -8.3m, 9.9m },
+                { -0.9m, -8.3m, 9.9m }
                 });
+            const string EXPECTED_MESSAGE = "Cannot add matrices as they don't have the same dimensions.";
 
             var exc = Assert.Throws<ArgumentException>(() => Matrix.Add(a, b));
-            Assert.Equal("Cannot add matrices as they don't have the same dimensions.", exc.Message);
+            Assert.Equal(EXPECTED_MESSAGE, exc.Message);
+        }
+
+        [Fact]
+        public void TestAddNullReference()
+        {
+            Matrix a = new Matrix(new decimal?[,] {
+                { 0.7m, 2.5m, 0.0m },
+                { -1.9m, 8.3m, -6.6m }
+                });
+            const string EXPECTED_PARAMETER = "a or b";
+
+            var exc = Assert.Throws<ArgumentNullException>(() => Matrix.Add(a, null));
+            Assert.Contains(EXPECTED_PARAMETER, exc.Message);
+        }
+
+        [Fact]
+        public void TestSubtract()
+        {
+            Matrix a = new Matrix(new decimal?[,] {
+                { 0.7m, 2.5m, 0.0m },
+                { -1.9m, 8.3m, -6.6m }
+                });
+            Matrix b = new Matrix(new decimal?[,] {
+                { 2.1m, 0.0m, 0.0m },
+                { -0.9m, -8.3m, -6.6m }
+                });
+            Matrix expected = new Matrix(new decimal?[,] {
+                { -1.4m, 2.5m, 0.0m },
+                { -1.0m, 16.6m, 0.0m }
+                });
+
+            Matrix actual = Matrix.Subtract(a, b);
+
+            Assert.Equal(expected.Values.GetUpperBound(0), actual.Values.GetUpperBound(0));
+            Assert.Equal(expected.Values.GetUpperBound(1), actual.Values.GetUpperBound(1));
+            for (int i = 0; i <= expected.Values.GetUpperBound(0); i++)
+            {
+                for (int j = 0; j <= expected.Values.GetUpperBound(1); j++)
+                {
+                    Assert.Equal(expected.Values[i, j], actual.Values[i, j]);
+                }
+            }
+        }
+
+        [Fact]
+        public void TestSubtractWithNullValue()
+        {
+            Matrix a = new Matrix(new decimal?[,] {
+                { 0.7m, 2.5m, 0.0m },
+                { -1.9m, 8.3m, -6.6m }
+                });
+            Matrix b = new Matrix(new decimal?[,] {
+                { 2.1m, 0.0m, 0.0m },
+                { -0.9m, null, -6.6m }
+                });
+            Matrix expected = new Matrix(new decimal?[,] {
+                { -1.4m, 2.5m, 0.0m },
+                { -1.0m, 8.3m, 0.0m }
+                });
+
+            Matrix actual = Matrix.Subtract(a, b);
+
+            Assert.Equal(expected.Values.GetUpperBound(0), actual.Values.GetUpperBound(0));
+            Assert.Equal(expected.Values.GetUpperBound(1), actual.Values.GetUpperBound(1));
+            for (int i = 0; i <= expected.Values.GetUpperBound(0); i++)
+            {
+                for (int j = 0; j <= expected.Values.GetUpperBound(1); j++)
+                {
+                    Assert.Equal(expected.Values[i, j], actual.Values[i, j]);
+                }
+            }
+        }
+
+        [Fact]
+        public void TestSubtractWithDifferentDimensions()
+        {
+            Matrix a = new Matrix(new decimal?[,] {
+                { 0.7m, 2.5m, 0.0m },
+                { -1.9m, 8.3m, -6.6m }
+                });
+            Matrix b = new Matrix(new decimal?[,] {
+                { 2.1m, 0.0m, 0.0m },
+                { -0.9m, -8.3m, 9.9m },
+                { -0.9m, -8.3m, 9.9m }
+                });
+            const string EXPECTED_MESSAGE = "Cannot subtract matrices as they don't have the same dimensions.";
+
+            var exc = Assert.Throws<ArgumentException>(() => Matrix.Subtract(a, b));
+            Assert.Equal(EXPECTED_MESSAGE, exc.Message);
+        }
+
+        [Fact]
+        public void TestSubtractNullReference()
+        {
+            Matrix a = new Matrix(new decimal?[,] {
+                { 0.7m, 2.5m, 0.0m },
+                { -1.9m, 8.3m, -6.6m }
+                });
+            const string EXPECTED_PARAMETER = "a or b";
+
+            var exc = Assert.Throws<ArgumentNullException>(() => Matrix.Subtract(a, null));
+            Assert.Contains(EXPECTED_PARAMETER, exc.Message);
+        }
+
+        [Fact]
+        public void TestTranspose()
+        {
+            Matrix a = new Matrix(new decimal?[,] {
+                { 0.7m, 2.5m, 0.0m },
+                { -1.9m, 8.3m, -6.6m }
+                });
+            Matrix expected = new Matrix(new decimal?[,]
+            {
+                { 0.7m, -1.9m },
+                { 2.5m, 8.3m },
+                { 0.0m,-6.6m }
+            });
+
+            Assert.Equal(expected.Values.GetUpperBound(0), a.Values.GetUpperBound(1));
+            Assert.Equal(expected.Values.GetUpperBound(1), a.Values.GetUpperBound(0));
+            for(int i = 0; i <= expected.Values.GetUpperBound(0); i++)
+            {
+                for(int j = 0; j <= expected.Values.GetUpperBound(1); j++)
+                {
+                    Assert.Equal(expected.Values[i, j], a.Values[j, i]);
+                }
+            }
+        }
+
+        [Fact]
+        public void TestTransposeNullReference()
+        {
+            Assert.Throws<ArgumentNullException>(() => Matrix.Transpose(null));
         }
     }
 }

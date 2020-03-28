@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ArcticKumquat.Math</name>
+    </assembly>
+    <members>
+        <member name="T:ArcticKumquat.Math.Matrix">
+            <summary>
+            Class defining a matrix object and operations that can be performed 
+            with one or more matrices.
+            </summary>
+        </member>
+        <member name="P:ArcticKumquat.Math.Matrix.Values">
+            <value>Gets the values of the matrix as a two-dimensional array 
+            of nullable decimals</value>
+        </member>
+        <member name="M:ArcticKumquat.Math.Matrix.#ctor(System.Nullable{System.Decimal}[0:,0:])">
+            <summary>
+            Constructor for a Matrix object.
+            </summary>
+            <param name="initialValues">Values of the matrix as a two-dimensional
+            array of nullable decimals.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown if a null ref is
+            provided as an argument.</exception>
+        </member>
+        <member name="M:ArcticKumquat.Math.Matrix.ScalarMultiply(ArcticKumquat.Math.Matrix,System.Decimal)">
+            <summary>
+            Scalar multiplication operation. Accepts any valid Matrix object, 
+            even one with null values. If a value in the Matrix is null, 
+            the multiplication yields null in the corresponding location in
+            the new Matrix.
+            </summary>
+            <param name="a">A Matrix object; can contain null values.</param>
+            <param name="k">Any non-null decimal number.</param>
+            <returns>A new Matrix object representing the result of the
+            scalar multiplication.</returns>
+        </member>
+        <member name="M:ArcticKumquat.Math.Matrix.Add(ArcticKumquat.Math.Matrix,ArcticKumquat.Math.Matrix)">
+            <summary>
+            Addition of two matrices. Any null values in either of the matrices
+            are converted into zeros.
+            </summary>
+            <param name="a">A Matrix object; can contain null values.</param>
+            <param name="b">A Matrix object; can contain null values.</param>
+            <returns>A new Matrix object representing the result of the
+            summation of the matrices given as arguments.</returns>
+            <exception cref="T:System.ArgumentNullException">Thrown if either of the
+            arguments is null.</exception>
+            <exception cref="T:System.ArgumentException">Thrown if the matrices provided
+            as arguments have mismatching dimensions.</exception>
+        </member>
+        <member name="M:ArcticKumquat.Math.Matrix.Subtract(ArcticKumquat.Math.Matrix,ArcticKumquat.Math.Matrix)">
+            <summary>
+            Substraction of two matrices (a - b). Any null values in either of the 
+            matrices are converted into zeros.
+            </summary>
+            <param name="a">A Matrix object; can contain null values.</param>
+            <param name="b">A Matrix object substracted from the first matrix; 
+            can contain null values.</param>
+            <returns>A new Matrix object representing the result of the
+            substraction of the matrices given as arguments.</returns>
+            <exception cref="T:System.ArgumentNullException">Thrown if either of the
+            arguments is null.</exception>
+            <exception cref="T:System.ArgumentException">Thrown if the matrices provided
+            as arguments have mismatching dimensions.</exception>
+        </member>
+        <member name="M:ArcticKumquat.Math.Matrix.Transpose(ArcticKumquat.Math.Matrix)">
+            <summary>
+            A transpose operation on a matrix.
+            </summary>
+            <param name="a">A Matrix object; can contain null values.</param>
+            <returns>A new Matrix object with the rows and columns transposed.</returns>
+        </member>
+        <member name="M:ArcticKumquat.Math.Matrix.ValidateSameDimensions(ArcticKumquat.Math.Matrix,ArcticKumquat.Math.Matrix)">
+            <summary>
+            Validation operation that ensures that the matrices provided as arguments
+            both have the same dimensions (so that e.g. addition operation can be
+            performed on them).
+            </summary>
+            <param name="a">A Matrix object; can contain null values.</param>
+            <param name="b">A Matrix object; can contain null values.</param>
+            <returns>True if the dimensions are the same, otherwise false.</returns>
+        </member>
+        <member name="M:ArcticKumquat.Math.Matrix.ValidateCompatibleDimensions(ArcticKumquat.Math.Matrix,ArcticKumquat.Math.Matrix)">
+            <summary>
+            Validation operation that ensures that the matrices provided as arguments
+            are compatible by their dimensions for a matrix multiplication operation
+            where a is the first matrix and b is the second one.
+            </summary>
+            <param name="a">A Matrix object; can contain null values.</param>
+            <param name="b">A Matrix object; can contain null values.</param>
+            <returns>True if the second dimension of matrix a equals the first
+            dimension of matrix b.</returns>
+        </member>
+    </members>
+</doc>
