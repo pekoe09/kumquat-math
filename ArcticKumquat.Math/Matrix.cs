@@ -13,9 +13,11 @@ namespace ArcticKumquat.Math
         public static Matrix ScalarMultiply(Matrix a, decimal k)
         {
             decimal?[,] values = a.Values;
-            for (int i = 0; i < a.Values.GetUpperBound(0); i++)
+            int ab = a.Values.GetUpperBound(0);
+            int bb = a.Values.GetUpperBound(1);
+            for (int i = 0; i <= a.Values.GetUpperBound(0); i++)
             {
-                for (int j = 0; j < a.Values.GetUpperBound(1); j++)
+                for (int j = 0; j <= a.Values.GetUpperBound(1); j++)
                 {
                     values[i, j] *= k;
                 }
@@ -30,12 +32,12 @@ namespace ArcticKumquat.Math
             {
                 throw new ArgumentException("Cannot add matrices as they don't have the same dimensions.");
             }
-            decimal?[,] sums = new decimal?[a.Values.GetUpperBound(0), a.Values.GetUpperBound(1)];
-            for(int i = 0; i< a.Values.GetUpperBound(0); i++)
+            decimal?[,] sums = new decimal?[a.Values.GetUpperBound(0) + 1, a.Values.GetUpperBound(1) + 1]; ;
+            for(int i = 0; i <= a.Values.GetUpperBound(0); i++)
             {
-                for(int j = 0; j < a.Values.GetUpperBound(1); j++)
+                for(int j = 0; j <= a.Values.GetUpperBound(1); j++)
                 {
-                    sums[i, j] = a.Values[i, j] + b.Values[i, j];
+                    sums[i, j] = (a.Values[i, j] ??= 0) + (b.Values[i, j] ??= 0);
                 }
             }
             Matrix c = new Matrix(sums);
@@ -56,10 +58,10 @@ namespace ArcticKumquat.Math
 
         public static Matrix Transpose(Matrix a)
         {
-            decimal?[,] transposed = new decimal?[a.Values.GetUpperBound(0), a.Values.GetUpperBound(1)];
-            for (int i = 0; i < a.Values.GetUpperBound(0); i++)
+            decimal?[,] transposed = new decimal?[a.Values.GetUpperBound(0) + 1, a.Values.GetUpperBound(1) + 1];
+            for (int i = 0; i <= a.Values.GetUpperBound(0); i++)
             {
-                for (int j = 0; j < a.Values.GetUpperBound(1); j++)
+                for (int j = 0; j <= a.Values.GetUpperBound(1); j++)
                 {
                     transposed[j, i] = a.Values[i, j];
                 }
@@ -70,8 +72,9 @@ namespace ArcticKumquat.Math
 
         public static bool ValidateSameDimensions(Matrix a, Matrix b)
         {
-            if((a.Values.GetUpperBound(0)!=b.Values.GetUpperBound(0)
-                || (a.Values.GetUpperBound(1) != b.Values.GetUpperBound(1))){
+            if((a.Values.GetUpperBound(0)!=b.Values.GetUpperBound(0))
+                || (a.Values.GetUpperBound(1) != b.Values.GetUpperBound(1)))
+            {
                 return false;
             }
             return true;
